@@ -1,4 +1,25 @@
-# Frenel AI HW Questions
+# HW solution
+
+## Usage
+Implementations of my solutions to q1, q2 and q3 are in q1.py, q2.py and q3.py.  
+main.py was build to run each logic using CL flags.  
+Use the --debug flag to write results to ./outputs.
+q1 and q3 both has 2 implemetations, a DL approach and a classic computer vision approach.  
+The default is the DL approach. To use the classic one, use the --classic-cv flag.  
+To use q1,q2 or q3 logics within your code, use the standalone runner. There is one in each qX.py file.  
+Example usage for each question: 
+```
+python home_test.py --image-path BLOOD_CELL_PATH --q1 --debug
+python home_test.py --image-path BLOOD_CELL_PATH --q1 --classic-cv --debug
+```
+```
+python home_test.py --image-path BLOOD_CELL_PATH --q2 --debug
+```
+```
+python home_test.py --image-path ./chita.jpg --q3 --debug
+python home_test.py --image-path ./chita.jpg --q3 --classic-cv --debug
+```
+q4 is answered at the end of this file
 
 ## Setup
 1. pip install -r requirments.txt
@@ -22,26 +43,6 @@ Save as weights/Swin2SR_CompressedSR_X4_48.pth
 Download from  https://drive.google.com/file/d/1jKIVJ7Fp5U8j2ACPgTrNmQ3Oa24rl7fC/view?usp=drive_link
 Save as cst-yolo-weights.pt
 
-## Usage
-implementations of my solutions to q1, q2 and q3 are in q1.py, q2.py and q3.py.  
-main.py was build to run each logic using CL flags.  
-Use the --debug flag to write results to ./outputs.
-q1 and q3 both has 2 implemetations, a DL approach and a classic computer vision approach.  
-The default is the DL approach. To use the classic one, use the --classic-cv flag.  
-To use q1,q2 or q3 logics within your code, use the standalone runner. There is one in each qX.py file.  
-Example usage for each question: 
-```
-python home_test.py --image-path BLOOD_CELL_PATH --q1 --debug
-python home_test.py --image-path BLOOD_CELL_PATH --q1 --classic-cv --debug
-```
-```
-python home_test.py --image-path BLOOD_CELL_PATH --q2 --debug
-```
-```
-python home_test.py --image-path ./chita.jpg --q3 --debug
-python home_test.py --image-path ./chita.jpg --q3 --classic-cv --debug
-```
-q4 is answered at the end of this file
 ## Q1
 BGMM is classic for this type of question, but as I was given here a labeled dataset I've also implemented a DL based solution.
 The code support both implementations. Default is the DL solution, to run the BGMM, use the --classic-cv flag 
@@ -114,44 +115,57 @@ The code support both implementations. The default is DeblurGAN + Swin2SR. To us
 ## Q4
 
 #### A
-p1(1,2,-2), p2(3,4,-6), p3(5,6,-10), p4(23,24,-46)
-v1 = p2-p1 = (2,2,-4)
-v2 = p3-p1 = (4, 4, -8)
-v2 = 2*v1 -> p1,p2,p3 are collinear
-v3 = p4-p1 = (22, 22, -44)
-v3 = 11*v1 -> p1,p2,p3,p4 are collinear
-A is not a plane, but a line.
+```
+p1(1,2,-2), p2(3,4,-6), p3(5,6,-10), p4(23,24,-46)  
+v1 = p2-p1 = (2,2,-4)  
+v2 = p3-p1 = (4, 4, -8)  
+v2 = 2*v1 -> p1,p2,p3 are collinear  
+v3 = p4-p1 = (22, 22, -44)  
+v3 = 11*v1 -> p1,p2,p3,p4 are collinear  
+```
+A is not a plane, but a line.  
 A = (1+a, 2+a, -2-2a)
 
 #### B
-p1(7,9,-3.5), p2(9,10,-4.5), p3(11,12, -5.5), p4(13,14, -6.5)   
-v1 = p1-p2 = (2, 1, -1)
-v2 = p3-p1 = (4, 3, -2)
-v_norm_b = (1, 0, 2)
-varify that p4 on the same plane:
-v3 = p4-p1 = (6, 5, -3)
+```
+p1(7,9,-3.5), p2(9,10,-4.5), p3(11,12, -5.5), p4(13,14, -6.5)     
+v1 = p1-p2 = (2, 1, -1)  
+v2 = p3-p1 = (4, 3, -2)  
+v_norm_b = (1, 0, 2)  
+```
+varify that p4 on the same plane:  
+```
+v3 = p4-p1 = (6, 5, -3)  
 v3 dot v_norm_b = 0 -> p4 is on the same plane as p1,p2,p3
+``` 
 B plane equation: 1(x-7)+0(y-9)+2(z+3.5) = 0 -> x + 2z = 0
 
 #### C
-p1(15,16, -0.0033333), p2(17, 18, -0.00294118 ), p3(19, 20, -0.00263158 ), p4(21, 22 -0.0023809,)
-v1 = p1-p2 = (2,2, 0.00039212000000000014)
-v2 = p3-p1 = (4, 4, 0.0007017199999999999)
+```
+p1(15,16, -0.0033333), p2(17, 18, -0.00294118 ), p3(19, 20, -0.00263158 ), p4(21, 22 -0.0023809,)  
+v1 = p1-p2 = (2,2, 0.00039212000000000014)  
+v2 = p3-p1 = (4, 4, 0.0007017199999999999)  
 v_norm_c = (-0.00016504000000000085, 0.00016504000000000085, 0) = (-1, 1, 0)
-varify that p4 on the same plane:
-v3 = p4-p1 = (6, 6, -0.0057142)
+``` 
+varify that p4 on the same plane:  
+```
+v3 = p4-p1 = (6, 6, -0.0057142)  
 v3 dot v_norm_c = 0 -> p4 is on the same plane as p1,p2,p3
-C plane equation: -1(x-15)+1(y-16)+0(z-(-0.0033333)) = 0 -> -x + y = 1
+``` 
+C plane equation: -1(x-15)+1(y-16)+0(z-(-0.0033333)) = 0 -> -x + y = 1  
 
 #### B and C intersection line
-v_norm_b = (1, 0, 2)
-v_norm_c = (-1, 1, 0)
+```
+v_norm_b = (1, 0, 2)  
+v_norm_c = (-1, 1, 0)  
 v_norm_b X v_norm_c = (-2, 2, 1)
-Now let's find a point on that line by finding a point on both planes:
-let's take x=0. From B, x+2z=0 -> z=0. From C, -x + y = 1 -> y = 1
-p_intersect = (0, 1, 0)
-bc_intersection_v = (-2t, 1+2t, t)
-
+``` 
+Now let's find a point on that line by finding a point on both planes:  
+let's take x=0.  
+From B, x+2z=0 -> z=0.  
+From C, -x + y = 1 -> y = 1  
+p_intersect = (0, 1, 0)  
+bc_intersection_v = (-2t, 1+2t, t)  
 
 #### Now find it's intersection point with A
 Extract a & t from the following top 2 equations:
