@@ -2,7 +2,25 @@
 
 ## Setup
 1. pip install -r requirments.txt
-2. Download all 4 .pt and .pth files to ./weights
+2. Download all 4 .pth files. If you choose to sae the files in a different place or with a different name,  
+   You mast explicitly add thier path with the relevant flag, e.g. --sam-weights PATH_TO_SAM_WEIGHTS.  
+### Download instructions per model
+
+#### SAM
+Download SAM weights from https://dl.fbaipublicfiles.com/segment_anything/sam_vit_h_4b8939.pth  
+Save as ```weights/sam_vit_h_4b8939.pth```
+
+#### DeblurGAN
+Download from https://drive.google.com/file/d/1DWtz9eVf4xWrdtTmwVPZhHHqwU7j5tGQ/view?usp=drive_link  
+Save as ```weights/deblur-gan.pth```
+
+#### Swin2SR
+Download from https://github.com/mv-lab/swin2sr/releases/download/v0.0.1/Swin2SR_CompressedSR_X4_48.pth
+Save as weights/Swin2SR_CompressedSR_X4_48.pth
+
+#### CST-YOLO
+Download from  https://drive.google.com/file/d/1jKIVJ7Fp5U8j2ACPgTrNmQ3Oa24rl7fC/view?usp=drive_link
+Save as cst-yolo-weights.pt
 
 ## Usage
 implementations of my solutions to q1, q2 and q3 are in q1.py, q2.py and q3.py.  
