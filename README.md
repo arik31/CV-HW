@@ -37,11 +37,11 @@ Save as ```weights/deblur-gan.pth```
 
 #### Swin2SR
 Download from https://github.com/mv-lab/swin2sr/releases/download/v0.0.1/Swin2SR_CompressedSR_X4_48.pth
-Save as weights/Swin2SR_CompressedSR_X4_48.pth
+Save as ```weights/Swin2SR_CompressedSR_X4_48.pth```
 
 #### CST-YOLO
 Download from  https://drive.google.com/file/d/1jKIVJ7Fp5U8j2ACPgTrNmQ3Oa24rl7fC/view?usp=drive_link
-Save as weights/cst-yolo-weights.pt
+Save as ```weights/cst-yolo-weights.pt```
 
 ## Q1
 BGMM is classic for this type of question, but as I was given here a labeled dataset I've also implemented a DL based solution.
