@@ -4,3 +4,6 @@
 [submodule "DeblureGAN-pytorch"]
 	path = DeblureGAN-pytorch
 	url = https://github.com/fourson/DeblurGAN-pytorch
+[submodule "swin2sr"]
+	path = swin2sr
+	url = https://github.com/mv-lab/swin2sr
