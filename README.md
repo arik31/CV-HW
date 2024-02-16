@@ -5,9 +5,12 @@
 2. Download all 4 .pt and .pth files to ./weights
 
 ## Usage
-The main script is home_test.py. Use the --debug flag to write results to ./outputs. 
-q1 and q3 both has 2 implemetations, a DL approach and a classic computer vision approach.
-The default is the DL approach, to use the classic one, use the --classic-cv flag.
+implementations of my solutions to q1, q2 and q3 are in q1.py, q2.py and q3.py.  
+main.py was build to run each logic using CL flags.  
+Use the --debug flag to write results to ./outputs.
+q1 and q3 both has 2 implemetations, a DL approach and a classic computer vision approach.  
+The default is the DL approach. To use the classic one, use the --classic-cv flag.  
+To use q1,q2 or q3 logics within your code, use the standalone runner. There is one in each qX.py file.  
 Example usage for each question: 
 ```
 python home_test.py --image-path BLOOD_CELL_PATH --q1 --debug
