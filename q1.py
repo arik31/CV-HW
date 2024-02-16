@@ -80,7 +80,7 @@ def bbox_detection(img_path, csp_yolo_ckp):
     As CST-YOLO is research-level project, I had to wrap it with a system call and write-read results from the disk
     """
     bbox_json_path = f"{os.getcwd()}/cst-yolo-output.json"
-    os.chdir('./CST_YOLO')
+    os.chdir('./CST-YOLO')
     csp_yolo_ckp = f'../{csp_yolo_ckp}'
     os.system(f"python -m detect --weights {csp_yolo_ckp} --source {img_path} --nosave --json-path {bbox_json_path}")
     os.chdir("..")

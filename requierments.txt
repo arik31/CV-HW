@@ -3,4 +3,5 @@ opencv-python
 -r ./CST-YOLO/requirements.txt
 scikit-image
 scikit-learn
+timm
 

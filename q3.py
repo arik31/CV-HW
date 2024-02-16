@@ -9,11 +9,12 @@ def q3_deblurGAN_swin2sr(args):
     J = cv2.resize(I, (W // 4, H // 4))
 
     # Deblur using DeblurGAN
-    os.chdir('./DeblurGAN-pytorch')
+    os.chdir('./DeblureGAN-pytorch')
     os.makedirs('input', exist_ok=True)
     os.makedirs('output', exist_ok=True)
     cv2.imwrite('./input/chita_blurred.jpg', J)
-    os.system(f"python deblur_image.py --blurred ./input --deblurred ./output --resume {args.deblur_gan_weights}")
+    deblur_gan_weights = f'../{args.deblur_gan_weights}'
+    os.system(f"python deblur_image.py --blurred ./input --deblurred ./output --resume {deblur_gan_weights}")
     deblur_small_image = cv2.imread('./output/deblurred chita_blurred.jpg')
     os.chdir("..")
 
@@ -21,7 +22,8 @@ def q3_deblurGAN_swin2sr(args):
     os.chdir('./swin2sr')
     os.makedirs('input', exist_ok=True)
     cv2.imwrite('./input/deblur_small.jpg', deblur_small_image)
-    os.system(f"python main_test_swin2sr.py --task compressed_sr --scale 4 --training_patch_size 48 --model_path  {args.swin2sr_weights} --folder_lq ./input --save_img_only")
+    swin2sr_weights = f'../{args.swin2sr_weights}'
+    os.system(f"python main_test_swin2sr.py --task compressed_sr --scale 4 --training_patch_size 48 --model_path  {swin2sr_weights} --folder_lq ./input --save_img_only")
     result = cv2.imread('./results/swin2sr_compressed_sr_x4/deblur_small_Swin2SR.png')
     os.chdir("..")
     if args.debug:
