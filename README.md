@@ -54,8 +54,8 @@ The code support both implementations. Default is the DL solution, to run the BG
 4. Relevant pixels are black ones. Arrange all their indexes in a N*2 matrix
 5. Run BGMM using sklearn. Set max component number to 50
 6. Use the model to cluster the pixel indexes
-7. For each cluster
-   8. Make a mask image of this cluster
+7. For each cluster:  
+   8. Make a mask image of this cluster  
    9. Fit an ellipse to it using cv2.convexHull & cv2.FitEllipse
 
 #### BGMM results
