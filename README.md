@@ -99,10 +99,12 @@ Using Otsu gave good binary images, so I didn't try anything extra.
 
 ## Q3
 
-Here I've tried Non-Local Means Denoising, and got interesting result, but I wanted something better.
-So I've used a combination of deblur-GAN and swin2sr:
-I've downscaled the image X4, fed it to the DeblurGAN & gave the result to the Swin2SR to upscale it back.
-The code support both implementations. The default is DeblurGAN + Swin2SR. To use FastNlMeansDenoisingColored, run with --classic-cv flag
+Here I've tried Non-Local Means Denoising and got interesting result, but I wanted something better.
+So I've used a combination of deblur-GAN and swin2sr:  
+1. Downscale the input X4
+2. Use DeblureGAN on the small image
+3. Use Swin2SR to upscale it back
+The code support both implementations. The default is DeblurGAN + Swi2SR. To use Non-Local Means, run with --classic-cv flag
 ### DeblurGAN + Swin2SR
 <img src="readme_images/deblur_small_Swin2SR.png">
 
