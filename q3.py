@@ -27,6 +27,7 @@ def q3_deblurGAN_swin2sr(args):
     result = cv2.imread('./results/swin2sr_compressed_sr_x4/deblur_small_Swin2SR.png')
     os.chdir("..")
     if args.debug:
+        os.makedirs(args.out_dir, exist_ok=True)
         cv2.imwrite(os.path.join(args.out_dir, 'Deblurred.png'), result)
     return result
 
@@ -36,6 +37,7 @@ def q3_non_local_means(args):
     I = cv2.imread(args.image_path)
     result = cv2.fastNlMeansDenoisingColored(I, None, 20, 20, 7, 21)
     if args.debug:
+        os.makedirs(args.out_dir, exist_ok=True)
         cv2.imwrite(os.path.join(args.out_dir, 'Deblurred_nlm.png'), result)
     return result
 
