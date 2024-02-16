@@ -1,3 +1,6 @@
 [submodule "CST-YOLO"]
 	path = CST-YOLO
 	url = https://github.com/mkang315/CST-YOLO
+[submodule "DeblureGAN-pytorch"]
+	path = DeblureGAN-pytorch
+	url = https://github.com/fourson/DeblurGAN-pytorch
