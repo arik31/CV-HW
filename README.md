@@ -17,9 +17,9 @@ swin2sr
 
 All the above are to be treated as black-boxes. I have made only the minimum changes in them to make them work.
 #### Utilities
-debug_utils - plotting functions
-weights - folder for all the relevant weight files
-output - all the debug output will be written here
+debug_utils - plotting functions  
+weights - folder for all the relevant weight files  
+output - all the debug output will be written here  
 readme_images
 
 ## Usage
