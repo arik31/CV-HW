@@ -1,5 +1,27 @@
 # HW solution
 
+## General
+This project is my solutions to the HW assignment.
+### Project structure
+#### Important part
+q1.py - script with 2 solutions to q1. One is based on BGMM, and the other is based on CST-YOLO.  
+q2.py - script with a solution to q2, using Otsu method.  
+q3.py - script with 2 solutions to q3. One using Non-Local Means, and the other using DeblureGAN & Swin2SR.  
+q4.jpg - detailed solution to q4  
+main.py - runner script for all solutions. See usage section for further instructions.
+
+#### Submodules
+CST-YOLO  
+DeblureGAN-pytorch  
+swin2sr  
+
+All the above are to be treated as black-boxes. I have made only the minimum changes in it to make it work.
+#### Utilities
+debug_utils - plotting functions
+weights - folder for all the relevant weight files
+output - all the debug output will be written here
+readme_images
+
 ## Usage
 Implementations of my solutions to q1, q2 and q3 are in q1.py, q2.py and q3.py.  
 main.py was build to run each logic using CL flags.  
@@ -64,14 +86,16 @@ The code support both implementations. Default is the DL solution, to run the BG
 ### DL Solution: CST-YOLO + SAM
 #### CST-YOLO
 From a brief search in the net I came across this CST-YOLO github project https://github.com/mkang315/CST-YOLO,
-which looks like a perfect fit.
-No pretrained models were provided here, so I had to train it myself.
-I could only fit batch_size=8 on my GPU, so I got 0.5mAP of 0.904,
+which looks like a perfect fit.  
+I've chosen it due to its report on high mAP, and its user-friendly code.
+No pretrained models were provided here, so I had to train it myself.  
+I could only fit batch_size=8 on my GPU, so I got 0.5mAP of 0.904,  
 a little lower than the 0.927 they report on the project's page, but still a great detector.
 The code, almost unmodified is in ./CST-YOLO.
 
 #### SAM
-Using https://github.com/facebookresearch/segment-anything with the CST-YOLO results as prompts produced out-of-the-box good segmentations.
+Using https://github.com/facebookresearch/segment-anything with the CST-YOLO results as prompts produced good segmentations.
+I've chosen it because it does great out-of-the-box segmentation, and it's super user-friendly. 
 
 #### Eliipses
 Once I had instance segmentations of the blood cells, I took each instance mask as binary image,
@@ -99,12 +123,19 @@ Using Otsu gave good binary images, so I didn't try anything extra.
 
 ## Q3
 
-Here I've tried Non-Local Means Denoising and got interesting result, but I wanted something better.
-So I've used a combination of deblur-GAN and swin2sr:  
+Here I've tried Non-Local Means Denoising and got interesting result, but I wanted something better.  
+I had some hard time with recent Deblur solutions, many don't have pretrained models or has an unstable code.    
+I've ended up with a combination of DeblurGAN and Swin2SR.  
+DeblurGAN is an old project which work well on small images but fails miserably with big ones.  
+Swin2SR was an ECCV 2022 paper. It is build on Swin Transformer v2, and was trained to SR compressed images.  
+I've combine those 2 as follows:
 1. Downscale the input X4
 2. Use DeblureGAN on the small image
-3. Use Swin2SR to upscale it back
-The code support both implementations. The default is DeblurGAN + Swi2SR. To use Non-Local Means, run with --classic-cv flag
+3. Use Swin2SR to upscale it back  
+
+The code support both implementations.  
+The default is DeblurGAN + Swi2SR.  
+To use Non-Local Means, run with --classic-cv flag
 ### DeblurGAN + Swin2SR
 <img src="readme_images/deblur_small_Swin2SR.png">
 
@@ -116,71 +147,12 @@ The code support both implementations. The default is DeblurGAN + Swi2SR. To use
 
 ## Q4
 
-#### A
-```
-p1(1,2,-2), p2(3,4,-6), p3(5,6,-10), p4(23,24,-46)  
-v1 = p2-p1 = (2,2,-4)  
-v2 = p3-p1 = (4, 4, -8)  
-v2 = 2*v1 -> p1,p2,p3 are collinear  
-v3 = p4-p1 = (22, 22, -44)  
-v3 = 11*v1 -> p1,p2,p3,p4 are collinear  
-```
 A is not a plane, but a line.  
-A = (1+a, 2+a, -2-2a)
+A = (1+a, 2+a, -2-2a)  
+B and C intersection vector = (-2t, 1+2t, t)   
+point of A,B,C intersection is (0, 1, 0)  
 
-#### B
-```
-p1(7,9,-3.5), p2(9,10,-4.5), p3(11,12, -5.5), p4(13,14, -6.5)     
-v1 = p1-p2 = (2, 1, -1)  
-v2 = p3-p1 = (4, 3, -2)  
-v_norm_b = (1, 0, 2)  
-```
-varify that p4 on the same plane:  
-```
-v3 = p4-p1 = (6, 5, -3)  
-v3 dot v_norm_b = 0 -> p4 is on the same plane as p1,p2,p3
-``` 
-B plane equation: 1(x-7)+0(y-9)+2(z+3.5) = 0 -> x + 2z = 0
-
-#### C
-```
-p1(15,16, -0.0033333), p2(17, 18, -0.00294118 ), p3(19, 20, -0.00263158 ), p4(21, 22 -0.0023809,)  
-v1 = p1-p2 = (2,2, 0.00039212000000000014)  
-v2 = p3-p1 = (4, 4, 0.0007017199999999999)  
-v_norm_c = (-0.00016504000000000085, 0.00016504000000000085, 0) = (-1, 1, 0)
-``` 
-varify that p4 on the same plane:  
-```
-v3 = p4-p1 = (6, 6, -0.0057142)  
-v3 dot v_norm_c = 0 -> p4 is on the same plane as p1,p2,p3
-``` 
-C plane equation: -1(x-15)+1(y-16)+0(z-(-0.0033333)) = 0 -> -x + y = 1  
-
-#### B and C intersection line
-```
-v_norm_b = (1, 0, 2)  
-v_norm_c = (-1, 1, 0)  
-v_norm_b X v_norm_c = (-2, 2, 1)
-``` 
-Now let's find a point on that line by finding a point on both planes:  
-let's take x=0.  
-From B, x+2z=0 -> z=0.  
-From C, -x + y = 1 -> y = 1  
-p_intersect = (0, 1, 0)  
-bc_intersection_v = (-2t, 1+2t, t)  
-
-#### Now find it's intersection point with A
-Extract a & t from the following top 2 equations:
-```
-(E1) 1+a = -2t
-(E2) 2+a = 1+2t
-(E3) -2-2a = t
-(E1+E2) 3+2a = 1 -> a = -1
-(E1) 1 -1 = -2t -> t = 0
-Varify intersection using E3
-(E3) -2-2(-1) = 0 -> 0 = 0
-```
-#### So point of A,B,C intersection is (0, 1, 0)
+See detailed proof in q4.jpg
 
 
 
