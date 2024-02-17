@@ -22,14 +22,12 @@ weights - folder for all the relevant weight files
 output - all the debug output will be written here  
 readme_images
 
-## Usage
-Implementations of my solutions to q1, q2 and q3 are in q1.py, q2.py and q3.py.  
-main.py was build to run each logic using CL flags.  
-Use the --debug flag to write results to ./outputs.
-q1 and q3 both has 2 implemetations, a DL approach and a classic computer vision approach.  
-The default is the DL approach. To use the classic one, use the --classic-cv flag.  
-To use q1,q2 or q3 logics within your code, use the standalone runner. There is one in each qX.py file.  
-Example usage for each question: 
+## Usage 
+main.py was build to run each logic using commandline flags.  
+#### Important flags
+1. --debug: write plots to ./outputs.
+2. --classic-cv: run the classic computer vision solution for q1 & q3. The default is the DL solution.
+#### Usage examples
 ```
 python home_test.py --image-path BLOOD_CELL_PATH --q1 --debug
 python home_test.py --image-path BLOOD_CELL_PATH --q1 --classic-cv --debug
@@ -41,7 +39,11 @@ python home_test.py --image-path BLOOD_CELL_PATH --q2 --debug
 python home_test.py --image-path ./chita.jpg --q3 --debug
 python home_test.py --image-path ./chita.jpg --q3 --classic-cv --debug
 ```
-q4 is answered at the end of this file
+To use q1,q2 or q3 logics within your code, use the standalone runner. There is one in each qX.py file.
+```
+ from q1 import q1_standalone
+ q1_standalone(image_path=YOUR_IMG_PATH, debug=False, classic_cv=False)
+```
 
 ## Setup
 1. pip install -r requirments.txt
@@ -49,19 +51,19 @@ q4 is answered at the end of this file
    You mast explicitly add thier path with the relevant flag, e.g. --sam-weights PATH_TO_SAM_WEIGHTS.  
 ### Download instructions per model
 
-#### SAM
+#### 1. SAM
 Download SAM weights from https://dl.fbaipublicfiles.com/segment_anything/sam_vit_h_4b8939.pth  
 Save as ```weights/sam_vit_h_4b8939.pth```
 
-#### DeblurGAN
+#### 2. DeblurGAN
 Download from https://drive.google.com/file/d/1DWtz9eVf4xWrdtTmwVPZhHHqwU7j5tGQ/view?usp=drive_link  
 Save as ```weights/deblur-gan.pth```
 
-#### Swin2SR
+#### 3. Swin2SR
 Download from https://github.com/mv-lab/swin2sr/releases/download/v0.0.1/Swin2SR_CompressedSR_X4_48.pth
 Save as ```weights/Swin2SR_CompressedSR_X4_48.pth```
 
-#### CST-YOLO
+#### 4. CST-YOLO
 Download from  https://drive.google.com/file/d/1jKIVJ7Fp5U8j2ACPgTrNmQ3Oa24rl7fC/view?usp=drive_link
 Save as ```weights/cst-yolo-weights.pt```
 
