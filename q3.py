@@ -2,7 +2,9 @@ import os
 import cv2
 
 def q3_deblurGAN_swin2sr(args):
-    """Deblur the chita image using DeblurGAN and Swin2SR. Default option"""
+    """Deblur the input image using DeblurGAN and Swin2SR.
+    Return a DeBlurred image in similar resolution to the input.
+    """
     I = cv2.imread(args.image_path)
     # Downscale to X4 smaller
     H, W, _ = I.shape
@@ -33,7 +35,7 @@ def q3_deblurGAN_swin2sr(args):
 
 
 def q3_non_local_means(args):
-    """Use opencv non-local means to deblur the chita"""
+    """Use opencv non-local means to deblur the input image"""
     I = cv2.imread(args.image_path)
     result = cv2.fastNlMeansDenoisingColored(I, None, 20, 20, 7, 21)
     if args.debug:

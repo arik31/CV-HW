@@ -11,7 +11,10 @@ from debug_utils import plot_bbox_mask_and_ellipse
 
 def q1_DL(args):
     """Identifies each red blood cell using CST-YOLO,
-    and returns its eccentricity and area. """
+    Segment is using SAM with the CST-YOLO bboxes as prompts,
+    Fit ellipse to each segmentation.
+    Returns a list of dicts. Each dict contains the eccentricity, area and parameters of an ellipse.
+    """
 
     # Bounding Box detection using CST-YOLO
     bboxs = bbox_detection(args.image_path, args.csp_yolo_weights)
@@ -27,10 +30,14 @@ def q1_DL(args):
     if args.debug:
         os.makedirs(args.out_dir, exist_ok=True)
         plot_bbox_mask_and_ellipse(args, args.out_dir, box_dets=bboxs, masks=masks, ellipses=ellipses)
+    print_ellipses(ellipses)
     return ellipses
 
 def q1_bgmm(args):
-    """Use Bayesian Gaussian Mixture Module to segment the blood cells"""
+    """Use Bayesian Gaussian Mixture Module to segment the blood cells.
+    Fit ellipse to each segmentation.
+    Returns a list of dicts. Each dict contains the eccentricity, area and parameters of an ellipse.
+    """
     orig_img = cv2.imread(args.image_path)
     H, W, _ = orig_img.shape
     # Down scale to get reasonable BGM runtime
@@ -58,10 +65,14 @@ def q1_bgmm(args):
     if args.debug:
         os.makedirs(args.out_dir, exist_ok=True)
         plot_bbox_mask_and_ellipse(args, args.out_dir, box_dets=None, masks=None, ellipses=ellipses)
+    print_ellipses(ellipses)
     return ellipses
 
 
 def get_ellipse_params(mask_img, resize_factor=1):
+    """Fit an ellipse to an input binary mask image.
+    Returns a dict contains the eccentricity, area and parameters of the ellipse
+    """
     points = np.column_stack(np.where(mask_img.T > 0))
     hull = cv2.convexHull(points)
     ((cx, cy), (w, h), angle) = cv2.fitEllipse(hull)
@@ -76,8 +87,8 @@ def get_ellipse_params(mask_img, resize_factor=1):
 
 def bbox_detection(img_path, csp_yolo_ckp):
     """
-    Use CST-YOLO to detect bboxs n the input image.
-    As CST-YOLO is research-level project, I had to wrap it with a system call and write-read results from the disk
+    Use CST-YOLO to perform bbox-detection on blood cells in the input image.
+    Return a list of detections. Each detection is [Label, bbox, conf]
     """
     bbox_json_path = f"{os.getcwd()}/cst-yolo-output.json"
     os.chdir('./CST-YOLO')
@@ -91,7 +102,9 @@ def bbox_detection(img_path, csp_yolo_ckp):
     return bboxs[Path(img_path).name]
 
 def segment(img_path, bboxs_dets, sam_ckp):
-    """segment the input image. If there are input boxes, use them as prompts"""
+    """Segment the input image using SAM. If there are input boxes, use them as prompts.
+    Return a 4D tensor of segmentation masks - N,1,H,W
+    """
     # setup SAM predictor
     image = cv2.imread(img_path)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -117,6 +130,15 @@ def segment(img_path, bboxs_dets, sam_ckp):
         masks = mask_generator.generate(image)
     print(f'******* Done Segmentation *******')
     return masks
+
+
+def print_ellipses(ellipses):
+    for ellipse in ellipses:
+        cx, cy = ellipse['ellipse_params'][:2]
+        e = ellipse['eccentricity']
+        area = ellipse['segmentation_area']
+        print(f'Eccentricity: {e}, Area: {area}, Ellipse center xy {(cx, cy)}')
+
 
 def q1_standalone(image_path, debug=False, out_dir=None, classic_cv=False, csp_yolo_weights=None, sam_weights=None):
     """Runner for q1 logic as a standalone function"""
