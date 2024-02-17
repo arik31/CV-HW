@@ -15,7 +15,7 @@ CST-YOLO
 DeblureGAN-pytorch  
 swin2sr  
 
-All the above are to be treated as black-boxes. I have made only the minimum changes in it to make it work.
+All the above are to be treated as black-boxes. I have made only the minimum changes in them to make them work.
 #### Utilities
 debug_utils - plotting functions
 weights - folder for all the relevant weight files
