@@ -4,7 +4,7 @@
 This project is my solutions to the HW assignment.
 ### Project structure
 #### Important part
-q1.py - script with 2 solutions to q1. One is based on BGMM, and the other is based on CST-YOLO.  
+q1.py - script with 2 solutions to q1. One is based on BGMM, and the other is based on CST-YOLO & SAM.  
 q2.py - script with a solution to q2, using Otsu method.  
 q3.py - script with 2 solutions to q3. One using Non-Local Means, and the other using DeblureGAN & Swin2SR.  
 q4.jpg - detailed solution to q4  
